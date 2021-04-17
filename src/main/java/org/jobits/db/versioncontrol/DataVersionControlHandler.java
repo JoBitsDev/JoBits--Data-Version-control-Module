@@ -3,12 +3,17 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.jobits.db;
+package org.jobits.db.versioncontrol;
 
 import com.root101.clean.core.domain.services.ResourceHandler;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.HashMap;
 import java.util.Map;
 import org.flywaydb.core.Flyway;
+import org.jobits.db.core.domain.UbicacionConexionModel;
+import org.jobits.db.core.module.DataVersionControlModule;
+import org.jobits.db.core.usecase.UbicacionConexionService;
 
 /**
  *
@@ -20,6 +25,9 @@ import org.flywaydb.core.Flyway;
 public class DataVersionControlHandler {
 
     private static final Map<String, DataVersionControlService> registeredServices = new HashMap<>();
+    public static final PropertyChangeListener ubicacionChangeListener = (evt) -> {
+        updateAllDataVersionControl();
+    };
 
     public static void registerDataVersionControlService(DataVersionControlService service) {
         if (!registeredServices.containsKey(service.getModuleName())) {
@@ -53,5 +61,7 @@ public class DataVersionControlHandler {
             flyWay.repair();
             flyWay.migrate();
         }
+
     }
+
 }

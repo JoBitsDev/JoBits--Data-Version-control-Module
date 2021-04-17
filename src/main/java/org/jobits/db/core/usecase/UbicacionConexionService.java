@@ -5,6 +5,7 @@
  */
 package org.jobits.db.core.usecase;
 
+import com.root101.clean.core.app.usecase.AbstractUseCase;
 import org.jobits.db.core.domain.UbicacionConexionModel;
 import org.jobits.db.core.domain.UbicacionWrapper;
 
@@ -13,8 +14,10 @@ import org.jobits.db.core.domain.UbicacionWrapper;
  *
  * @author ERIK QUESADA
  */
-public interface UbicacionConexionService {
+public interface UbicacionConexionService extends AbstractUseCase{
 
+    public static final String PROP_LOCATION_CHANGED = "locationChanged";
+    
     public void editUbicacion(UbicacionConexionModel uc, int selectedUbicacion);
 
     public void setSelectedUbicacion(UbicacionConexionModel ubicacionSeleccionada);

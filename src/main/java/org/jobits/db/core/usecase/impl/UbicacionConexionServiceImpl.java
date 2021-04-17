@@ -21,7 +21,8 @@ import java.util.logging.Logger;
  * @author Jorge
  *
  */
-public class UbicacionConexionServiceImpl implements UbicacionConexionService {
+public class UbicacionConexionServiceImpl extends com.root101.clean.core.app.usecase.AbstractUseCaseImpl
+        implements UbicacionConexionService {
 
     private UbicacionWrapper ubicaciones;
     private ObjectMapper om = new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT);
@@ -70,8 +71,10 @@ public class UbicacionConexionServiceImpl implements UbicacionConexionService {
 
     @Override
     public void setSelectedUbicacion(UbicacionConexionModel ubicacionSeleccionada) {
+        UbicacionConexionModel oldUbicacion = ubicaciones.getUbicacionActiva();
         ubicaciones.setUbicacionSeleccionada(ubicacionSeleccionada);
         guardarUbicacionesAlmacenadas();
+        firePropertyChange(PROP_LOCATION_CHANGED, oldUbicacion, ubicaciones.getUbicacionActiva());
     }
 
     @Override

@@ -12,8 +12,10 @@ import com.root101.clean.core.app.modules.DefaultAbstractModule;
 import com.root101.clean.core.domain.services.ResourceHandler;
 import com.root101.clean.core.exceptions.AlreadyInitModule;
 import com.root101.clean.core.exceptions.NotInitModule;
+import org.jobits.db.core.usecase.UbicacionConexionService;
 import org.jobits.db.core.usecase.impl.UbicacionConexionServiceImpl;
 import org.jobits.db.pool.UbicacionResourceServiceImpl;
+import org.jobits.db.versioncontrol.DataVersionControlHandler;
 
 /**
  *
@@ -59,7 +61,7 @@ public class DataVersionControlModule extends DefaultAbstractModule {
     private DataVersionControlModule() {
         ResourceHandler.registerInternal("data-version-control-module-props");
         ResourceHandler.registerResourceService(new UbicacionResourceServiceImpl(new UbicacionConexionServiceImpl()));//TODO: inyectar
-
+        getImplementation(UbicacionConexionService.class).addPropertyChangeListener(DataVersionControlHandler.ubicacionChangeListener);
     }
 
     @Override

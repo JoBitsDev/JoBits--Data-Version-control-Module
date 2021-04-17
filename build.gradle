@@ -37,7 +37,7 @@ publishing {
     publications {
         maven(MavenPublication) {
             from components.java
-            artifactId = "${artifactId}"
+            artifactId = "version-control"
             artifact sourceJar {
                 classifier "sources"
             }
@@ -48,7 +48,7 @@ publishing {
 dependencies {
     testImplementation     'junit:junit:4.13'
     
-    implementation 'com.root101:clean-core:2.1.0.RELEASE.20210118'
+    implementation 'com.root101:clean-core:2.1.1.RELEASE.20210118'
      
     // https://mvnrepository.com/artifact/com.google.inject/guice
     compile group: 'com.google.inject', name: 'guice', version: '4.2.3'
@@ -62,7 +62,7 @@ dependencies {
     // https://mvnrepository.com/artifact/org.eclipse.persistence/org.eclipse.persistence.jpa
     compile group: 'org.eclipse.persistence', name: 'org.eclipse.persistence.jpa', version: '2.7.6'
     
-        // https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-core 
+    // https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-core 
     //Jackson
     compile group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: '2.10.2'
     compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.10.2'

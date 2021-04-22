@@ -60,7 +60,7 @@ public class DataVersionControlModule extends DefaultAbstractModule {
 
     private DataVersionControlModule() {
         ResourceHandler.registerInternal("data-version-control-module-props");
-        ResourceHandler.registerResourceService(new UbicacionResourceServiceImpl(new UbicacionConexionServiceImpl()));//TODO: inyectar
+        ResourceHandler.registerResourceService(new UbicacionResourceServiceImpl(getImplementation(UbicacionConexionService.class)));//TODO: inyectar
         getImplementation(UbicacionConexionService.class).addPropertyChangeListener(DataVersionControlHandler.ubicacionChangeListener);
     }
 

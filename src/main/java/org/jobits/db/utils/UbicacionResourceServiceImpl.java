@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.jobits.db.pool;
+package org.jobits.db.utils;
 
 import com.root101.clean.core.domain.services.ResourceService;
 import java.util.HashMap;

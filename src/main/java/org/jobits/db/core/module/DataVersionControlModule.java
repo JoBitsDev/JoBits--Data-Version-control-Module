@@ -14,7 +14,7 @@ import com.root101.clean.core.exceptions.AlreadyInitModule;
 import com.root101.clean.core.exceptions.NotInitModule;
 import org.jobits.db.core.usecase.UbicacionConexionService;
 import org.jobits.db.core.usecase.impl.UbicacionConexionServiceImpl;
-import org.jobits.db.pool.UbicacionResourceServiceImpl;
+import org.jobits.db.utils.UbicacionResourceServiceImpl;
 import org.jobits.db.versioncontrol.DataVersionControlHandler;
 
 /**

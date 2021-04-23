@@ -1,4 +1,4 @@
-package org.jobits.db.pool;
+package org.jobits.db.utils;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
@@ -9,6 +9,7 @@ import javax.persistence.PersistenceException;
 import com.root101.clean.core.app.repo.CRUDRepository;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.jobits.db.pool.ConnectionPoolService;
 
 /**
  * FirstDream

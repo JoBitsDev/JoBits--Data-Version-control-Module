@@ -10,7 +10,10 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.flywaydb.core.Flyway;
+import org.flywaydb.core.internal.exception.FlywaySqlException;
 import org.jobits.db.core.domain.UbicacionConexionModel;
 import org.jobits.db.core.module.DataVersionControlModule;
 import org.jobits.db.core.usecase.UbicacionConexionService;
@@ -57,9 +60,13 @@ public class DataVersionControlHandler {
                 .createSchemas(true)
                 .schemas(service.getDataSchema())
                 .load();
-        if (flyWay.info().pending().length > 0) {
-            flyWay.repair();
-            flyWay.migrate();
+        try {
+            if (flyWay.info().pending().length > 0) {
+                flyWay.repair();
+                flyWay.migrate();
+            }
+        } catch (Exception ex) {
+            Logger.getGlobal().log(Level.WARNING,ex.getMessage());
         }
 
     }

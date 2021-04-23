@@ -33,12 +33,12 @@ public class DefaultConnectionPool implements ConnectionPoolService {
     private final String PASSWORD = "javax.persistence.jdbc.password";
     private final String URL = "javax.persistence.jdbc.url";
     private final String USER = "javax.persistence.jdbc.user";
-    
+
     private final String START_UP_CHECK = "hibernate.query.startup_check";//FALSE
     private final String VALIDATION_MODE = "javax.persistence.validation.mode";//NONE
     private final String AUTOREGISTER_LISTENERS = "hibernate.validator.autoregister_listeners";//FALSE
     private final String APPLY_TO_DDL = "hibernate.validator.apply_to_ddl";//FALSE
-    
+
     private List<EntityManagerFactoryCache> cachedEmf = new ArrayList<>();
     private boolean connected = false;
 
@@ -58,6 +58,9 @@ public class DefaultConnectionPool implements ConnectionPoolService {
     @Override
     public EntityManager getCurrentConnection() {
         init();
+        if (currentConnection == null) {
+            throw new IllegalStateException(ResourceHandler.getString("msg.org.jobits.db.404"));
+        }
         return currentConnection;
     }
 
@@ -124,8 +127,9 @@ public class DefaultConnectionPool implements ConnectionPoolService {
             initConnections();
 
         } else {
-            throw new NullPointerException(
-                    ResourceHandler.getString("msg.com.jobits.pos.null_pointer_EMF_not_Found"));
+            currentConnection = null;
+//            throw new NullPointerException(
+//                    ResourceHandler.getString("msg.com.jobits.pos.null_pointer_EMF_not_Found"));
         }
     }
 
@@ -136,6 +140,7 @@ public class DefaultConnectionPool implements ConnectionPoolService {
             connected = true;
         } catch (Exception e) {
             Logger.getLogger(DefaultConnectionPool.class).log(Logger.Level.ERROR, e.getMessage());
+            currentConnection = null;
             connected = false;
         }
         return connected;

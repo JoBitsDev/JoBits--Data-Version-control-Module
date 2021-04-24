@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.jobits.db.pool;
+package org.jobits.db.pool.impl;
 
 import org.jobits.db.core.domain.UbicacionConexionModel;
 import java.util.ArrayList;
@@ -14,6 +14,7 @@ import javax.persistence.Persistence;
 import com.root101.clean.core.domain.services.ResourceHandler;
 import javax.persistence.EntityManager;
 import org.jboss.logging.Logger;
+import org.jobits.db.pool.ConnectionPoolService;
 
 /**
  * El ConnectionPool tiene como responsabilidad crer los entityManagerFactory y
@@ -22,10 +23,6 @@ import org.jboss.logging.Logger;
  * @author Jorge
  */
 public class DefaultConnectionPool implements ConnectionPoolService {
-
-    public static ConnectionPoolService createPoolService(String persistenceUnitName) {
-        return new DefaultConnectionPool(persistenceUnitName);
-    }
 
     private final String DRIVER = "javax.persistence.jdbc.driver";
 
@@ -51,7 +48,7 @@ public class DefaultConnectionPool implements ConnectionPoolService {
         init();
     }
 
-    private DefaultConnectionPool(String persistenceUnitName) {
+    public DefaultConnectionPool(String persistenceUnitName) {
         this.persistenceUnitName = persistenceUnitName;
     }
 
@@ -61,7 +58,11 @@ public class DefaultConnectionPool implements ConnectionPoolService {
         if (currentConnection == null) {
             throw new IllegalStateException(ResourceHandler.getString("msg.org.jobits.db.404"));
         }
-        return currentConnection;
+        if (currentConnection.getTransaction().isActive()) {
+            return currentConnection;
+        } else {
+            return EMF.createEntityManager();
+        }
     }
 
     @Override

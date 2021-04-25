@@ -24,5 +24,6 @@ module org.joits.db {
     exports org.jobits.db.core.module;
     exports org.jobits.db.core.usecase;
     exports org.jobits.db.pool;
+    exports org.jobits.db.utils;
     exports org.jobits.db.versioncontrol;
 }

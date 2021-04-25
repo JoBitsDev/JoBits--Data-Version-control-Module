@@ -58,11 +58,7 @@ public class DefaultConnectionPool implements ConnectionPoolService {
         if (currentConnection == null) {
             throw new IllegalStateException(ResourceHandler.getString("msg.org.jobits.db.404"));
         }
-        if (currentConnection.getTransaction().isActive()) {
-            return currentConnection;
-        } else {
-            return EMF.createEntityManager();
-        }
+        return currentConnection;
     }
 
     @Override

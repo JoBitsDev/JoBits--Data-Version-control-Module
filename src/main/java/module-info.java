@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-module org.joits.db {
+module org.jobits.db {
     requires com.google.guice;
     requires org.flywaydb.core;
     requires org.postgresql.jdbc;

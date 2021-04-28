@@ -37,7 +37,7 @@ publishing {
     publications {
         maven(MavenPublication) {
             from components.java
-            artifactId = "version-control"
+            artifactId = artifact
             artifact sourceJar {
                 classifier "sources"
             }

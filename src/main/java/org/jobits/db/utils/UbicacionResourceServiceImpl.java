@@ -8,8 +8,9 @@ package org.jobits.db.utils;
 import com.root101.clean.core.domain.services.ResourceService;
 import java.util.HashMap;
 import java.util.Map;
-import org.jobits.db.core.domain.UbicacionConexionModel;
 import org.jobits.db.core.usecase.UbicacionConexionService;
+import org.jobits.db.core.domain.ConexionPropertiesModel;
+import org.jobits.db.core.usecase.UbicacionConexionHandler;
 
 /**
  *
@@ -20,8 +21,6 @@ import org.jobits.db.core.usecase.UbicacionConexionService;
  */
 public class UbicacionResourceServiceImpl implements ResourceService<String> {
 
-    private UbicacionConexionService ubicacionRepo;
-
     private final String UBICACION_SELECCIONADA_NOMBRE = "com.jobits.pos.db.current_conn_name";
     private final String UBICACION_SELECCIONADA_URL = "com.jobits.pos.db.current_conn_url";
     private final String UBICACION_SELECCIONADA_USER = "com.jobits.pos.db.current_conn_user";
@@ -31,8 +30,7 @@ public class UbicacionResourceServiceImpl implements ResourceService<String> {
 
     private Map<String, String> propertiesMap = new HashMap<>();
 
-    public UbicacionResourceServiceImpl(UbicacionConexionService ubicacionRepo) {
-        this.ubicacionRepo = ubicacionRepo;
+    public UbicacionResourceServiceImpl() {
         propertiesMap.put(UBICACION_SELECCIONADA_URL, UBICACION_SELECCIONADA_URL);
         propertiesMap.put(UBICACION_SELECCIONADA_DRIVER, UBICACION_SELECCIONADA_DRIVER);
         propertiesMap.put(UBICACION_SELECCIONADA_NOMBRE, UBICACION_SELECCIONADA_NOMBRE);
@@ -54,7 +52,7 @@ public class UbicacionResourceServiceImpl implements ResourceService<String> {
 
     @Override
     public String getString(String string) {
-        UbicacionConexionModel model = ubicacionRepo.getUbicaciones().getUbicacionActiva();
+        ConexionPropertiesModel model = UbicacionConexionHandler.getConnectionPoolService().getUbicaciones().getUbicacionActiva();
         switch (string) {
             case UBICACION_SELECCIONADA_DRIVER:
                 return model.getDriver();

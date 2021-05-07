@@ -5,7 +5,7 @@
  */
 package org.jobits.db.pool;
 
-import org.jobits.db.pool.impl.DefaultConnectionPool;
+import org.jobits.db.pool.impl.LocalConnectionPool;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -23,7 +23,7 @@ public class ConnectionPoolHandler {
     private static Map<String, ConnectionPoolService> connectionServices = new HashMap<>();
 
     private static ConnectionProvider connProvider = (persistenceUnitName) -> {
-        return new DefaultConnectionPool(persistenceUnitName);
+        return new LocalConnectionPool(persistenceUnitName);
     };
 
     public static void registerConnectionPoolService(String moduleName, ConnectionPoolService service) {

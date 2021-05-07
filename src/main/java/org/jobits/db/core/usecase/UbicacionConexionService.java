@@ -6,22 +6,21 @@
 package org.jobits.db.core.usecase;
 
 import com.root101.clean.core.app.usecase.AbstractUseCase;
-import org.jobits.db.core.domain.UbicacionConexionModel;
-import org.jobits.db.core.domain.UbicacionWrapper;
-
+import org.jobits.db.core.domain.ConexionPropertiesModel;
+import org.jobits.db.core.domain.ConexionPropertiesWrapperModel;
 
 /**
  *
  * @author ERIK QUESADA
  */
-public interface UbicacionConexionService extends AbstractUseCase{
+public interface UbicacionConexionService extends AbstractUseCase {
 
-    public static final String PROP_LOCATION_CHANGED = "locationChanged";
-    
-    public void editUbicacion(UbicacionConexionModel uc, int selectedUbicacion);
+    public static final String PROP_LOCATION_CHANGED = "conexionChanged";
 
-    public void setSelectedUbicacion(UbicacionConexionModel ubicacionSeleccionada);
+    public void editConexion(ConexionPropertiesModel uc, int selectedUbicacion);
 
-    public UbicacionWrapper getUbicaciones();
-    
+    public void setSelectedConexion(ConexionPropertiesModel ubicacionSeleccionada);
+
+    public ConexionPropertiesWrapperModel getUbicaciones();
+
 }

@@ -8,7 +8,7 @@ package org.jobits.db.core.module;
 import com.google.inject.AbstractModule;
 import com.google.inject.Scopes;
 import org.jobits.db.core.usecase.UbicacionConexionService;
-import org.jobits.db.core.usecase.impl.UbicacionConexionServiceImpl;
+import org.jobits.db.core.usecase.impl.LocalUbicacionConexionServiceImpl;
 
 /**
  *
@@ -21,7 +21,6 @@ public class DataVersionInjectionConfig extends AbstractModule {
 
     @Override
     protected void configure() {
-        bind(UbicacionConexionService.class).to(UbicacionConexionServiceImpl.class).in(Scopes.SINGLETON);
     }
 
 }

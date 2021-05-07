@@ -3,9 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.jobits.db.core.domain;
+package org.jobits.db.core.domain.impl;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.jobits.db.core.domain.ConexionPropertiesModel;
+import org.jobits.db.core.domain.ConexionPropertiesModel;
+import org.jobits.db.core.domain.ConexionPropertiesWrapperModel;
+import org.jobits.db.core.domain.ConexionPropertiesWrapperModel;
 
 /**
  * FirstDream
@@ -13,37 +17,42 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
  * @author Jorge
  *
  */
-public class UbicacionWrapper {
+public class ConexionPropertiesWrapperModelImpl implements ConexionPropertiesWrapperModel {
 
-    private UbicacionConexionModel[] ubicaciones = new UbicacionConexionModel[4];
+    private ConexionPropertiesModel[] ubicaciones = new ConexionPropertiesModel[4];
     private int selectedUbicacion;
 
-    public UbicacionWrapper() {
+    public ConexionPropertiesWrapperModelImpl() {
     }
 
-    public UbicacionWrapper(UbicacionConexionModel[] ubicaciones, int selectedUbicacion) {
+    public ConexionPropertiesWrapperModelImpl(ConexionPropertiesModel[] ubicaciones, int selectedUbicacion) {
         this.ubicaciones = ubicaciones;
         this.selectedUbicacion = selectedUbicacion;
     }
 
-    public UbicacionConexionModel[] getUbicaciones() {
+    @Override
+    public ConexionPropertiesModel[] getUbicaciones() {
         return ubicaciones;
     }
 
-    public void setUbicaciones(UbicacionConexionModel[] ubicaciones) {
+    @Override
+    public void setUbicaciones(ConexionPropertiesModel[] ubicaciones) {
         this.ubicaciones = ubicaciones;
     }
 
+    @Override
     public int getSelectedUbicacion() {
         return selectedUbicacion;
     }
 
+    @Override
     public void setSelectedUbicacion(int selectedUbicacion) {
         this.selectedUbicacion = selectedUbicacion;
     }
     
     @JsonIgnore
-    public void setUbicacionSeleccionada(UbicacionConexionModel selectedUbicacion) {
+    @Override
+    public void setUbicacionSeleccionada(ConexionPropertiesModel selectedUbicacion) {
         for (int i = 0; i < ubicaciones.length; i++) {
             if (ubicaciones[i].equals(selectedUbicacion)) {
                 this.selectedUbicacion = i;
@@ -52,7 +61,8 @@ public class UbicacionWrapper {
     }
 
     @JsonIgnore
-    public UbicacionConexionModel getUbicacionActiva() {
+    @Override
+    public ConexionPropertiesModel getUbicacionActiva() {
         return selectedUbicacion == -1 ? null : ubicaciones[selectedUbicacion];
     }
 

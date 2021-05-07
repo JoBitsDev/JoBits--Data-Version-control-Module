@@ -7,7 +7,7 @@ package org.jobits.db.pool;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
-import org.jobits.db.core.domain.UbicacionConexionModel;
+import org.jobits.db.core.domain.ConexionPropertiesModel;
 
 /**
  *
@@ -17,11 +17,11 @@ public interface ConnectionPoolService {
 
     public EntityManagerFactory getEMF();
 
-    public EntityManagerFactory getEmfFrom(UbicacionConexionModel connectionsProperties);
+    public EntityManagerFactory getEmfFrom(ConexionPropertiesModel connectionsProperties);
 
     public EntityManager getCurrentConnection();
 
-    public UbicacionConexionModel getCurrentUbicacion();
+    public ConexionPropertiesModel getCurrentUbicacion();
 
     public void resetConnection();
 

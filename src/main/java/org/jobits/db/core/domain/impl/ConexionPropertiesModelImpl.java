@@ -3,10 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.jobits.db.core.domain;
+package org.jobits.db.core.domain.impl;
 
 import com.fasterxml.jackson.annotation.JsonAlias;
 import java.util.Objects;
+import org.jobits.db.core.domain.ConexionPropertiesModel;
+import org.jobits.db.core.domain.TipoConexion;
 
 /**
  * FirstDream
@@ -14,18 +16,18 @@ import java.util.Objects;
  * @author Jorge
  *
  */
-public class UbicacionConexionModel {
+public class ConexionPropertiesModelImpl implements ConexionPropertiesModel{
 
-    public static UbicacionConexionModel from(String nombre, String url, String usuario,
-            String contrasena, String driver, TipoUbicacion tipoUbicacion) {
-        return new UbicacionConexionModel(nombre, url, usuario, contrasena, driver, tipoUbicacion);
+    public static ConexionPropertiesModel from(String nombre, String url, String usuario,
+            String contrasena, String driver, TipoConexion tipoUbicacion) {
+        return new ConexionPropertiesModelImpl(nombre, url, usuario, contrasena, driver, tipoUbicacion);
     }
 
-    public static UbicacionConexionModel[] getDefaultUbicaciones() {
-        UbicacionConexionModel[] ret = new UbicacionConexionModel[4];
+    public static ConexionPropertiesModelImpl[] getDefaultUbicaciones() {
+        ConexionPropertiesModelImpl[] ret = new ConexionPropertiesModelImpl[4];
         for (int i = 0; i < ret.length; i++) {
-            UbicacionConexionModel ubicacionVacia
-                    = new UbicacionConexionModel("<Nueva Ubicacion>", "0.0.0.0", "Nueva", "Nueva", "Nueva", TipoUbicacion.DESACTIVADA);
+            ConexionPropertiesModelImpl ubicacionVacia
+                    = new ConexionPropertiesModelImpl("<Nueva Ubicacion>", "0.0.0.0", "Nueva", "Nueva", "Nueva", TipoConexion.DESACTIVADA);
             ret[i] = ubicacionVacia;
         }
         return ret;
@@ -37,10 +39,10 @@ public class UbicacionConexionModel {
     private String usuario;
     private String contrasena;
     private String driver;
-    private TipoUbicacion tipoUbicacion;
+    private TipoConexion tipoUbicacion;
 
-    public UbicacionConexionModel(String nombre, String url, String usuario,
-            String contrasena, String driver, TipoUbicacion tipoUbicacion) {
+    public ConexionPropertiesModelImpl(String nombre, String url, String usuario,
+            String contrasena, String driver, TipoConexion tipoUbicacion) {
         this.tipoUbicacion = tipoUbicacion;
         this.nombreUbicacion = nombre;
         this.url = url;
@@ -49,7 +51,7 @@ public class UbicacionConexionModel {
         this.driver = driver;
     }
 
-    public UbicacionConexionModel() {
+    public ConexionPropertiesModelImpl() {
     }
 
     //
@@ -95,11 +97,11 @@ public class UbicacionConexionModel {
         this.driver = driver;
     }
 
-    public TipoUbicacion getTipoUbicacion() {
+    public TipoConexion getTipoUbicacion() {
         return tipoUbicacion;
     }
 
-    public void setTipoUbicacion(TipoUbicacion tipoUbicacion) {
+    public void setTipoUbicacion(TipoConexion tipoUbicacion) {
         this.tipoUbicacion = tipoUbicacion;
     }
 
@@ -135,7 +137,7 @@ public class UbicacionConexionModel {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        final UbicacionConexionModel other = (UbicacionConexionModel) obj;
+        final ConexionPropertiesModelImpl other = (ConexionPropertiesModelImpl) obj;
         if (!Objects.equals(this.nombreUbicacion, other.nombreUbicacion)) {
             return false;
         }

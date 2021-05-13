@@ -12,9 +12,10 @@ import com.root101.clean.core.app.modules.DefaultAbstractModule;
 import com.root101.clean.core.domain.services.ResourceHandler;
 import com.root101.clean.core.exceptions.AlreadyInitModule;
 import com.root101.clean.core.exceptions.NotInitModule;
+import org.jobits.db.core.usecase.UbicacionConexionHandler;
 import org.jobits.db.core.usecase.UbicacionConexionService;
-import org.jobits.db.core.usecase.impl.UbicacionConexionServiceImpl;
-import org.jobits.db.pool.UbicacionResourceServiceImpl;
+import org.jobits.db.core.usecase.impl.LocalUbicacionConexionServiceImpl;
+import org.jobits.db.utils.UbicacionResourceServiceImpl;
 import org.jobits.db.versioncontrol.DataVersionControlHandler;
 
 /**
@@ -60,8 +61,8 @@ public class DataVersionControlModule extends DefaultAbstractModule {
 
     private DataVersionControlModule() {
         ResourceHandler.registerInternal("data-version-control-module-props");
-        ResourceHandler.registerResourceService(new UbicacionResourceServiceImpl(getImplementation(UbicacionConexionService.class)));//TODO: inyectar
-        getImplementation(UbicacionConexionService.class).addPropertyChangeListener(DataVersionControlHandler.ubicacionChangeListener);
+        ResourceHandler.registerResourceService(new UbicacionResourceServiceImpl());//TODO: inyectar
+        UbicacionConexionHandler.registerUbicacionConexionService(new LocalUbicacionConexionServiceImpl());
     }
 
     @Override
@@ -71,7 +72,10 @@ public class DataVersionControlModule extends DefaultAbstractModule {
 
     @Override
     protected <T> T getOwnImplementation(Class<T> type) {
-        return inj.getInstance(type);
+        if (type == UbicacionConexionService.class) {
+            return (T) UbicacionConexionHandler.getConnectionPoolService();
+        }
+        return null;
     }
 
 }

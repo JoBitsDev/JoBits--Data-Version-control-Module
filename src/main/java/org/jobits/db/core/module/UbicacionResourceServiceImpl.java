@@ -3,13 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.jobits.db.pool;
+package org.jobits.db.core.module;
 
 import com.root101.clean.core.domain.services.ResourceService;
 import java.util.HashMap;
 import java.util.Map;
-import org.jobits.db.core.domain.UbicacionConexionModel;
 import org.jobits.db.core.usecase.UbicacionConexionService;
+import org.jobits.db.core.domain.ConexionPropertiesModel;
 
 /**
  *
@@ -54,7 +54,7 @@ public class UbicacionResourceServiceImpl implements ResourceService<String> {
 
     @Override
     public String getString(String string) {
-        UbicacionConexionModel model = ubicacionRepo.getUbicaciones().getUbicacionActiva();
+        ConexionPropertiesModel model = ubicacionRepo.getUbicaciones().getUbicacionActiva();
         switch (string) {
             case UBICACION_SELECCIONADA_DRIVER:
                 return model.getDriver();

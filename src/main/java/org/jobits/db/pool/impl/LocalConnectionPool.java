@@ -3,9 +3,8 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.jobits.db.pool;
+package org.jobits.db.pool.impl;
 
-import org.jobits.db.core.domain.UbicacionConexionModel;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -14,6 +13,10 @@ import javax.persistence.Persistence;
 import com.root101.clean.core.domain.services.ResourceHandler;
 import javax.persistence.EntityManager;
 import org.jboss.logging.Logger;
+import org.jobits.db.core.domain.TipoConexion;
+import org.jobits.db.pool.ConnectionPoolService;
+import org.jobits.db.core.domain.ConexionPropertiesModel;
+import org.jobits.db.core.domain.impl.ConexionPropertiesModelImpl;
 
 /**
  * El ConnectionPool tiene como responsabilidad crer los entityManagerFactory y
@@ -21,11 +24,7 @@ import org.jboss.logging.Logger;
  *
  * @author Jorge
  */
-public class DefaultConnectionPool implements ConnectionPoolService {
-
-    public static ConnectionPoolService createPoolService(String persistenceUnitName) {
-        return new DefaultConnectionPool(persistenceUnitName);
-    }
+public class LocalConnectionPool implements ConnectionPoolService {
 
     private final String DRIVER = "javax.persistence.jdbc.driver";
 
@@ -43,15 +42,15 @@ public class DefaultConnectionPool implements ConnectionPoolService {
     private boolean connected = false;
 
     private EntityManager currentConnection;
-    private UbicacionConexionModel currentUbicacion;
+    private ConexionPropertiesModel currentUbicacion;
 
     private String persistenceUnitName;
 
-    private DefaultConnectionPool(UbicacionConexionModel connectionProperties) {
+    private LocalConnectionPool(ConexionPropertiesModel connectionProperties) {
         init();
     }
 
-    private DefaultConnectionPool(String persistenceUnitName) {
+    public LocalConnectionPool(String persistenceUnitName) {
         this.persistenceUnitName = persistenceUnitName;
     }
 
@@ -65,7 +64,7 @@ public class DefaultConnectionPool implements ConnectionPoolService {
     }
 
     @Override
-    public UbicacionConexionModel getCurrentUbicacion() {
+    public ConexionPropertiesModel getCurrentUbicacion() {
         return currentUbicacion;
     }
 
@@ -76,7 +75,7 @@ public class DefaultConnectionPool implements ConnectionPoolService {
     }
 
     @Override
-    public EntityManagerFactory getEmfFrom(UbicacionConexionModel connectionsProperties) {
+    public EntityManagerFactory getEmfFrom(ConexionPropertiesModel connectionsProperties) {
         for (EntityManagerFactoryCache cache : cachedEmf) {
             if (cache.getUbicaicon().equals(connectionsProperties)) {
                 return cache.getFactory();
@@ -103,7 +102,7 @@ public class DefaultConnectionPool implements ConnectionPoolService {
         }
     }
 
-    private HashMap<String, String> getConnectionsPropeties(UbicacionConexionModel connectionProperties) {
+    private HashMap<String, String> getConnectionsPropeties(ConexionPropertiesModel connectionProperties) {
         HashMap<String, String> prop = new HashMap<>();
         prop.put(URL, connectionProperties.getUrl());
         prop.put(USER, connectionProperties.getUsuario());
@@ -114,7 +113,7 @@ public class DefaultConnectionPool implements ConnectionPoolService {
     }
 
     private void init() {
-        UbicacionConexionModel oldModel = currentUbicacion;
+        ConexionPropertiesModel oldModel = currentUbicacion;
         setCurrentUbicacion();
         if (oldModel != null && currentConnection != null) {
             if (oldModel.equals(currentUbicacion)) {
@@ -139,7 +138,7 @@ public class DefaultConnectionPool implements ConnectionPoolService {
             currentConnection = EMF.createEntityManager();
             connected = true;
         } catch (Exception e) {
-            Logger.getLogger(DefaultConnectionPool.class).log(Logger.Level.ERROR, e.getMessage());
+            Logger.getLogger(LocalConnectionPool.class).log(Logger.Level.ERROR, e.getMessage());
             currentConnection = null;
             connected = false;
         }
@@ -153,18 +152,18 @@ public class DefaultConnectionPool implements ConnectionPoolService {
         String pass = ResourceHandler.getString("com.jobits.pos.db.current_conn_pass");
         String driver = ResourceHandler.getString("com.jobits.pos.db.current_conn_driver");
         String tipoUbicacion = ResourceHandler.getString("com.jobits.pos.db.current_conn_tipo");
-        UbicacionConexionModel model = UbicacionConexionModel.from(nombreUbicacion, url,
+        ConexionPropertiesModel model = ConexionPropertiesModelImpl.from(nombreUbicacion, url,
                 user, pass, driver,
-                UbicacionConexionModel.TipoUbicacion.valueOf(tipoUbicacion));
+                TipoConexion.valueOf(tipoUbicacion));
         currentUbicacion = model;
     }
 
     private class EntityManagerFactoryCache {
 
         private final EntityManagerFactory factory;
-        private final UbicacionConexionModel ubicaicon;
+        private final ConexionPropertiesModel ubicaicon;
 
-        public EntityManagerFactoryCache(EntityManagerFactory factory, UbicacionConexionModel ubicaicon) {
+        public EntityManagerFactoryCache(EntityManagerFactory factory, ConexionPropertiesModel ubicaicon) {
             this.factory = factory;
             this.ubicaicon = ubicaicon;
         }
@@ -173,7 +172,7 @@ public class DefaultConnectionPool implements ConnectionPoolService {
             return factory;
         }
 
-        public UbicacionConexionModel getUbicaicon() {
+        public ConexionPropertiesModel getUbicaicon() {
             return ubicaicon;
         }
 

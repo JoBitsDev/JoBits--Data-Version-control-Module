@@ -6,17 +6,12 @@
 package org.jobits.db.versioncontrol;
 
 import com.root101.clean.core.domain.services.ResourceHandler;
-import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.flywaydb.core.Flyway;
-import org.flywaydb.core.internal.exception.FlywaySqlException;
-import org.jobits.db.core.domain.UbicacionConexionModel;
-import org.jobits.db.core.module.DataVersionControlModule;
-import org.jobits.db.core.usecase.UbicacionConexionService;
 
 /**
  *
@@ -66,7 +61,7 @@ public class DataVersionControlHandler {
                 flyWay.migrate();
             }
         } catch (Exception ex) {
-            Logger.getGlobal().log(Level.WARNING,ex.getMessage());
+            Logger.getGlobal().log(Level.WARNING, ex.getMessage());
         }
 
     }

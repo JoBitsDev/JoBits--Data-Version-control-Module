@@ -1,4 +1,4 @@
-package org.jobits.db.pool;
+package org.jobits.db.utils;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -17,6 +17,7 @@ import com.root101.clean.core.domain.services.ResourceHandler;
 import java.util.Collections;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.jobits.db.pool.ConnectionPoolService;
 
 /**
  * FirstDream

@@ -11,8 +11,9 @@ import java.util.List;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import com.root101.clean.core.domain.services.ResourceHandler;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.persistence.EntityManager;
-import org.jboss.logging.Logger;
 import org.jobits.db.core.domain.TipoConexion;
 import org.jobits.db.pool.ConnectionPoolService;
 import org.jobits.db.core.domain.ConexionPropertiesModel;
@@ -27,6 +28,7 @@ import org.jobits.db.core.domain.impl.ConexionPropertiesModelImpl;
 public class LocalConnectionPool implements ConnectionPoolService {
 
     private final String DRIVER = "javax.persistence.jdbc.driver";
+    private final Logger LOG = Logger.getLogger(LocalConnectionPool.class.getName());
 
     private EntityManagerFactory EMF;
     private final String PASSWORD = "javax.persistence.jdbc.password";
@@ -46,9 +48,6 @@ public class LocalConnectionPool implements ConnectionPoolService {
 
     private String persistenceUnitName;
 
-    private LocalConnectionPool(ConexionPropertiesModel connectionProperties) {
-        init();
-    }
 
     public LocalConnectionPool(String persistenceUnitName) {
         this.persistenceUnitName = persistenceUnitName;
@@ -83,7 +82,9 @@ public class LocalConnectionPool implements ConnectionPoolService {
         }
         EntityManagerFactory newFactory = Persistence.createEntityManagerFactory(persistenceUnitName, getConnectionsPropeties(connectionsProperties));
         EntityManagerFactoryCache cacheItem = new EntityManagerFactoryCache(newFactory, connectionsProperties);
+        LOG.log(Level.INFO, "EntityManager Creado y archivado {0}", connectionsProperties.toString());
         cachedEmf.add(cacheItem);
+
         return newFactory;
 
     }
@@ -97,6 +98,7 @@ public class LocalConnectionPool implements ConnectionPoolService {
     @Override
     public void resetConnection() {
         if (currentConnection != null) {
+            currentConnection.flush();
             currentConnection.close();
             currentConnection = EMF.createEntityManager();
         }
@@ -136,9 +138,10 @@ public class LocalConnectionPool implements ConnectionPoolService {
         try {
             //EMF.getCache().evictAll();
             currentConnection = EMF.createEntityManager();
+            LOG.log(Level.INFO, "EntityManager nuevo", currentConnection.toString());
             connected = true;
         } catch (Exception e) {
-            Logger.getLogger(LocalConnectionPool.class).log(Logger.Level.ERROR, e.getMessage());
+            Logger.getLogger(LocalConnectionPool.class.getName()).log(Level.WARNING, e.getMessage());
             currentConnection = null;
             connected = false;
         }
@@ -146,6 +149,7 @@ public class LocalConnectionPool implements ConnectionPoolService {
     }
 
     private void setCurrentUbicacion() {
+        
         String nombreUbicacion = ResourceHandler.getString("com.jobits.pos.db.current_conn_name");
         String url = ResourceHandler.getString("com.jobits.pos.db.current_conn_url");
         String user = ResourceHandler.getString("com.jobits.pos.db.current_conn_user");

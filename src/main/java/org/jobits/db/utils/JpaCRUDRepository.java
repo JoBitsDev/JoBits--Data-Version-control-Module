@@ -68,6 +68,13 @@ public abstract class JpaCRUDRepository<Domain, Entity> implements CRUDRepositor
         }
     }
 
+    @Override
+    public void rollBackTransaction() {
+        if (getEntityManager().getTransaction().isActive()) {
+            getEntityManager().getTransaction().rollback();
+        }
+    }
+
     public void refresh(Domain a) {
         persist(PersistAction.REFRESH, a);
     }

@@ -28,6 +28,7 @@ public class UbicacionConexionHandler {
     public static void registerUbicacionConexionService(UbicacionConexionService service) {
         connectionServices = service;
         connectionServices.addPropertyChangeListener(DataVersionControlHandler.ubicacionChangeListener);
+        DataVersionControlHandler.ubicacionChangeListener.propertyChange(null);
     }
 
     public static UbicacionConexionService getConnectionPoolService() {

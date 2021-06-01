@@ -48,7 +48,6 @@ public class LocalConnectionPool implements ConnectionPoolService {
 
     private String persistenceUnitName;
 
-
     public LocalConnectionPool(String persistenceUnitName) {
         this.persistenceUnitName = persistenceUnitName;
     }
@@ -64,6 +63,9 @@ public class LocalConnectionPool implements ConnectionPoolService {
 
     @Override
     public ConexionPropertiesModel getCurrentUbicacion() {
+        if (currentUbicacion == null) {
+            setCurrentUbicacion();
+        }
         return currentUbicacion;
     }
 
@@ -149,7 +151,7 @@ public class LocalConnectionPool implements ConnectionPoolService {
     }
 
     private void setCurrentUbicacion() {
-        
+
         String nombreUbicacion = ResourceHandler.getString("com.jobits.pos.db.current_conn_name");
         String url = ResourceHandler.getString("com.jobits.pos.db.current_conn_url");
         String user = ResourceHandler.getString("com.jobits.pos.db.current_conn_user");

@@ -12,6 +12,8 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.flywaydb.core.Flyway;
+import org.jobits.db.pool.ConnectionPoolHandler;
+import org.jobits.db.pool.ConnectionPoolService;
 
 /**
  *
@@ -30,6 +32,7 @@ public class DataVersionControlHandler {
     public static void registerDataVersionControlService(DataVersionControlService service) {
         if (!registeredServices.containsKey(service.getModuleName())) {
             registeredServices.put(service.getModuleName(), service);
+            updateDataVersionControl(service.getModuleName());
         }
     }
 
@@ -46,9 +49,13 @@ public class DataVersionControlHandler {
     }
 
     private static void updateDB(DataVersionControlService service) {
-        String url = ResourceHandler.getString("com.jobits.pos.db.current_conn_url");
-        String user = ResourceHandler.getString("com.jobits.pos.db.current_conn_user");
-        String pass = ResourceHandler.getString("com.jobits.pos.db.current_conn_pass");
+        ConnectionPoolService pool = ConnectionPoolHandler.getConnectionPoolService(service.getModuleName());
+        if (pool == null) {
+            return;
+        }
+        String url = pool.getCurrentUbicacion().getUrl();
+        String user = pool.getCurrentUbicacion().getUsuario();
+        String pass = pool.getCurrentUbicacion().getContrasena();
         Flyway flyWay = Flyway.configure()
                 .dataSource(url, user, pass)
                 .locations(service.getVersionControlPath())

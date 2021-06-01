@@ -10,7 +10,8 @@ import javax.persistence.EntityManagerFactory;
 import org.jobits.db.core.domain.ConexionPropertiesModel;
 
 /**
- *
+ * Es el servicio encargado de gestionar los EnityManager de los modulos
+ * 
  * @author Jorge
  */
 public interface ConnectionPoolService {

@@ -50,7 +50,7 @@ public class DataVersionControlHandler {
 
     private static void updateDB(DataVersionControlService service) {
         ConnectionPoolService pool = ConnectionPoolHandler.getConnectionPoolService(service.getModuleName());
-        if (pool == null) {
+        if (pool == null || pool.getCurrentUbicacion() == null) {
             return;
         }
         String url = pool.getCurrentUbicacion().getUrl();

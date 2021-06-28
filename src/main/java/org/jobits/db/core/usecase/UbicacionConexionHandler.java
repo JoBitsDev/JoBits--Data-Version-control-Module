@@ -26,7 +26,7 @@ public class UbicacionConexionHandler {
     private static UbicacionConexionService connectionServices ;
 
     public static void registerUbicacionConexionService(UbicacionConexionService service) {
-        if (service != null) {
+        if (connectionServices != null) {
             connectionServices.removePropertyChangeListener(DataVersionControlHandler.ubicacionChangeListener);
         }
         connectionServices = service;

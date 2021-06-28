@@ -5,7 +5,6 @@
  */
 package org.jobits.db.versioncontrol;
 
-import com.root101.clean.core.domain.services.ResourceHandler;
 import java.beans.PropertyChangeListener;
 import java.util.HashMap;
 import java.util.Map;

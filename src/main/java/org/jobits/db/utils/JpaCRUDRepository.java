@@ -122,9 +122,9 @@ public abstract class JpaCRUDRepository<Domain, Entity> implements CRUDRepositor
             cq.select(cq.from(entityClass));
             return converter.from(new ArrayList<>(getEntityManager().createQuery(cq).getResultList()));
         } catch (Exception e) {
-            getEntityManager().getTransaction().rollback();
-            return new ArrayList<>(findAll());
+            dbException(e);
         }
+        return new ArrayList<>();
     }
 
     public List<Domain> findRange(int[] range) {

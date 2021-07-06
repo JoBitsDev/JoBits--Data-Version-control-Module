@@ -53,6 +53,9 @@ public class UbicacionResourceServiceImpl implements ResourceService<String> {
     @Override
     public String getString(String string) {
         ConexionPropertiesModel model = UbicacionConexionHandler.getConnectionPoolService().getUbicaciones().getUbicacionActiva();
+        if (model == null) {
+            return null;
+        }
         switch (string) {
             case UBICACION_SELECCIONADA_DRIVER:
                 return model.getDriver();

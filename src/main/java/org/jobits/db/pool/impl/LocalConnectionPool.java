@@ -158,6 +158,9 @@ public class LocalConnectionPool implements ConnectionPoolService {
         String pass = ResourceHandler.getString("com.jobits.pos.db.current_conn_pass");
         String driver = ResourceHandler.getString("com.jobits.pos.db.current_conn_driver");
         String tipoUbicacion = ResourceHandler.getString("com.jobits.pos.db.current_conn_tipo");
+        if (url == null) {
+            return;
+        }
         ConexionPropertiesModel model = ConexionPropertiesModelImpl.from(nombreUbicacion, url,
                 user, pass, driver,
                 TipoConexion.valueOf(tipoUbicacion));

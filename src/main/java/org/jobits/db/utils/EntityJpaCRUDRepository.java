@@ -82,10 +82,10 @@ public abstract class EntityJpaCRUDRepository<Entity> implements CRUDRepository<
 
     }
 
-    @Deprecated
     @Override
     public Entity destroyById(Object o) throws RuntimeException {
-        throw new IllegalCallerException("Bad Call: nosotros no trabajamos con este metodo");
+        Entity e = findBy(o);
+        return destroy(e);
     }
 
     @Override
@@ -240,6 +240,7 @@ public abstract class EntityJpaCRUDRepository<Entity> implements CRUDRepository<
     public static enum PersistAction {
         CREATE,
         DELETE,
+        DELETE_BY_ID,
         UPDATE,
         REFRESH
     }

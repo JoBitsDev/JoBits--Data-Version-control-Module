@@ -1,14 +1,14 @@
 package org.jobits.db.utils;
 
+import com.root101.clean.core.app.repo.CRUDRepository;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
 import java.util.List;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceException;
-import com.root101.clean.core.app.repo.CRUDRepository;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceException;
 import org.jobits.db.pool.ConnectionPoolService;
 
 /**
@@ -94,7 +94,7 @@ public abstract class EntityJpaCRUDRepository<Entity> implements CRUDRepository<
         try {
             ret = getEntityManager().find(entityClass, id);
         } catch (Exception ex) {
-            Logger.getLogger(EntityJpaCRUDRepository.class.getName()).log(Level.SEVERE, null, ex);
+            dbException(ex);
         }
 
         return ret;
@@ -107,9 +107,9 @@ public abstract class EntityJpaCRUDRepository<Entity> implements CRUDRepository<
             cq.select(cq.from(entityClass));
             return new ArrayList<>(getEntityManager().createQuery(cq).getResultList());
         } catch (Exception e) {
-            getEntityManager().getTransaction().rollback();
-            return new ArrayList<>(findAll());
+            dbException(e);
         }
+        return List.of();
     }
 
     public List<Entity> findRange(int[] range) {
@@ -121,9 +121,9 @@ public abstract class EntityJpaCRUDRepository<Entity> implements CRUDRepository<
         try {
             return q.getResultList();
         } catch (Exception ex) {
-            Logger.getLogger(EntityJpaCRUDRepository.class.getName()).log(Level.SEVERE, null, ex);
+            dbException(ex);
         }
-        return new ArrayList<>();
+        return List.of();
     }
 
     @Override
@@ -176,9 +176,6 @@ public abstract class EntityJpaCRUDRepository<Entity> implements CRUDRepository<
         propertyChangeSupport.removePropertyChangeListener(listener);
     }
 
-    protected void firePropertyChange(String propertyName, Object oldValue, Object newValue) {
-        propertyChangeSupport.firePropertyChange(propertyName, oldValue, newValue);
-    }
 
     @Override
     public void addPropertyChangeListener(PropertyChangeListener listener) {
@@ -192,7 +189,21 @@ public abstract class EntityJpaCRUDRepository<Entity> implements CRUDRepository<
     public Class<Entity> getEntityClass() {
         return entityClass;
     }
+    protected void firePropertyChange(String propertyName, Object oldValue, Object newValue) {
+        propertyChangeSupport.firePropertyChange(propertyName, oldValue, newValue);
+    }
 
+    protected void dbException(Exception e) {
+        if (getEntityManager().getTransaction().isActive()) {
+            getEntityManager().getTransaction().rollback();
+            getEntityManager().getEntityManagerFactory().getCache().evictAll();
+            getEntityManager().clear();
+        }
+        Logger.getLogger(EntityJpaCRUDRepository.class.getName()).log(Level.SEVERE, null, e);
+        firePropertyChange("ERROR", null, e.getMessage());
+        throw new PersistenceException(
+                "Error en base de datos. Reconectandose... \n " + e.getLocalizedMessage());
+    }
     //
     // Private Methods
     //
@@ -218,20 +229,9 @@ public abstract class EntityJpaCRUDRepository<Entity> implements CRUDRepository<
             }
             return entity;
         } catch (Exception e) {
-            e.printStackTrace();
             dbException(e);
         }
         return null;
-    }
-
-    private void dbException(Exception e) {
-        if (getEntityManager().getTransaction().isActive()) {
-            getEntityManager().getTransaction().rollback();
-            getEntityManager().getEntityManagerFactory().getCache().evictAll();
-            getEntityManager().clear();
-        }
-        throw new PersistenceException(
-                "Error en base de datos. Reconectandose... \n " + e.getLocalizedMessage());
     }
 
     //

@@ -109,7 +109,7 @@ public abstract class JpaCRUDRepository<Domain, Entity> implements CRUDRepositor
         try {
             ret = converter.from(getEntityManager().find(entityClass, id));
         } catch (Exception ex) {
-            Logger.getLogger(JpaCRUDRepository.class.getName()).log(Level.SEVERE, null, ex);
+            dbException(ex);
         }
 
         return ret;
@@ -124,7 +124,7 @@ public abstract class JpaCRUDRepository<Domain, Entity> implements CRUDRepositor
         } catch (Exception e) {
             dbException(e);
         }
-        return new ArrayList<>();
+        return List.of();
     }
 
     public List<Domain> findRange(int[] range) {
@@ -136,7 +136,7 @@ public abstract class JpaCRUDRepository<Domain, Entity> implements CRUDRepositor
         try {
             return converter.from(q.getResultList());
         } catch (Exception ex) {
-            Logger.getLogger(JpaCRUDRepository.class.getName()).log(Level.SEVERE, null, ex);
+            dbException(ex);
         }
         return new ArrayList<>();
     }
@@ -234,7 +234,6 @@ public abstract class JpaCRUDRepository<Domain, Entity> implements CRUDRepositor
             }
             return converter.from(entity);
         } catch (Exception e) {
-            e.printStackTrace();
             dbException(e);
         }
         return null;
@@ -246,6 +245,7 @@ public abstract class JpaCRUDRepository<Domain, Entity> implements CRUDRepositor
             getEntityManager().getEntityManagerFactory().getCache().evictAll();
             getEntityManager().clear();
         }
+        Logger.getLogger(JpaCRUDRepository.class.getName()).log(Level.SEVERE, null, e);
         throw new PersistenceException(
                 "Error en base de datos. Reconectandose... \n " + e.getLocalizedMessage());
     }

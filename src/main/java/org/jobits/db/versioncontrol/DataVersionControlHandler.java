@@ -11,6 +11,7 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.flywaydb.core.Flyway;
+import org.jobits.db.core.domain.ConexionPropertiesModel;
 import org.jobits.db.pool.ConnectionPoolHandler;
 import org.jobits.db.pool.ConnectionPoolService;
 
@@ -24,6 +25,7 @@ import org.jobits.db.pool.ConnectionPoolService;
 public class DataVersionControlHandler {
 
     private static final Map<String, DataVersionControlService> registeredServices = new HashMap<>();
+    private static final Map<String, Boolean> updatedDataBases = new HashMap<>();
     public static final PropertyChangeListener ubicacionChangeListener = (evt) -> {
         updateAllDataVersionControl();
     };
@@ -48,6 +50,9 @@ public class DataVersionControlHandler {
     }
 
     private static void updateDB(DataVersionControlService service) {
+        if (updatedDataBases.getOrDefault(service.getModuleName(),false)) {
+                return;
+        }
         ConnectionPoolService pool = ConnectionPoolHandler.getConnectionPoolService(service.getModuleName());
         if (pool == null || pool.getCurrentUbicacion() == null) {
             return;
@@ -66,6 +71,7 @@ public class DataVersionControlHandler {
                 flyWay.repair();
                 flyWay.migrate();
             }
+            updatedDataBases.put(service.getModuleName(), true);
         } catch (Exception ex) {
             Logger.getGlobal().log(Level.WARNING, ex.getMessage());
         }

@@ -48,24 +48,24 @@ publishing {
 dependencies {
     testImplementation     'junit:junit:4.13'
     
-    implementation 'com.root101.clean:com.root101.clean.core:2.1.5'
+    implementation 'com.root101.clean:com.root101.clean.core:2.1.6'
      
     // https://mvnrepository.com/artifact/com.google.inject/guice
-    compile group: 'com.google.inject', name: 'guice', version: '4.2.3'
+    implementation group: 'com.google.inject', name: 'guice', version: '4.2.3'
     
     // https://mvnrepository.com/artifact/org.flywaydb/flyway-core
-    compile group: 'org.flywaydb', name: 'flyway-core', version: '7.4.0'
+    implementation group: 'org.flywaydb', name: 'flyway-core', version: '7.4.0'
     
     //JDBC
-    compile group: 'org.postgresql', name: 'postgresql', version: '42.2.10'
+    implementation group: 'org.postgresql', name: 'postgresql', version: '42.2.10'
     
     // https://mvnrepository.com/artifact/org.eclipse.persistence/org.eclipse.persistence.jpa
-    compile group: 'org.eclipse.persistence', name: 'org.eclipse.persistence.jpa', version: '2.7.6'
+    implementation group: 'org.eclipse.persistence', name: 'org.eclipse.persistence.jpa', version: '2.7.6'
     
     // https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-core 
     //Jackson
-    compile group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: '2.10.2'
-    compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.10.2'
+    implementation group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: '2.10.2'
+    implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.10.2'
     
     
 }
